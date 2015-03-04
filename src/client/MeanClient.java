@@ -22,7 +22,7 @@ public class MeanClient {
 				e.printStackTrace();
 				System.err.println("Not Able to connect to RMIServer");
 			} catch (NotBoundException e) {
-				// TODO Auto-generated catch block
+				System.err.println("No such remote object");
 				e.printStackTrace();
 			}
 			delay(1000);
@@ -30,6 +30,7 @@ public class MeanClient {
 		System.err.println("Client terminated");
 	}
 
+	
 	private static void delay(int delay) {
 		try {
 			Thread.sleep(delay);
