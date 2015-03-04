@@ -1,2 +1,4 @@
+/sensorServer
 /client
-/server
+/rmiServer
+/sensor

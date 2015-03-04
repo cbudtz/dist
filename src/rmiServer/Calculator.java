@@ -1,4 +1,4 @@
-package server;
+package rmiServer;
 
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
@@ -24,6 +24,7 @@ public class Calculator implements ICalculator {
 			ICalculator stub = (ICalculator) UnicastRemoteObject.exportObject(calc, 0);
 			Registry registry = LocateRegistry.createRegistry(1099);
 			registry.bind("Calculator", stub);
+			System.out.println("RMIServer is running...");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

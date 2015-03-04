@@ -1,26 +1,39 @@
 package client;
 
-import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import server.ICalculator;
+import rmiServer.ICalculator;
 
 public class MeanClient {
 
 	public static void main(String[] args) {
+		for (int i = 0;i<20;i++){
 
-		try
-		{
-			Registry registry = LocateRegistry.getRegistry("localhost", 1099);
-			ICalculator stub = (ICalculator) registry.lookup("Calculator");
-			System.out.println(stub.calculateMean());
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		} catch (NotBoundException e) {
+			try
+			{
+				System.out.println("Trying to Connect to RMIServer");
+				Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+				ICalculator stub = (ICalculator) registry.lookup("Calculator");
+				System.out.println(stub.calculateMean());
+			} catch (RemoteException e) {
+				e.printStackTrace();
+				System.err.println("Not Able to connect to RMIServer");
+			} catch (NotBoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			delay(1000);
+		}
+		System.err.println("Client terminated");
+	}
+
+	private static void delay(int delay) {
+		try {
+			Thread.sleep(delay);
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
