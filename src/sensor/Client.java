@@ -7,11 +7,11 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 class Client implements Runnable{
-	ClientController ctrl;
+	SensorController ctrl;
 	private String host;
 	private int port;
 
-	Client(ClientController ctrl, String host, int port){
+	Client(SensorController ctrl, String host, int port){
 		this.ctrl = ctrl;
 		this.host = host;
 		this.port = port;

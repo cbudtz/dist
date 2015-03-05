@@ -3,9 +3,9 @@ package sensor;
 import java.util.Random;
 
 public class DataGenerator implements Runnable{
-	ClientController ctrl;
+	SensorController ctrl;
 	
-	public DataGenerator(ClientController clientController) {
+	public DataGenerator(SensorController clientController) {
 		this.ctrl = clientController;
 	}
 	@Override

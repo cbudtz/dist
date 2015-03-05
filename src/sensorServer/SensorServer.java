@@ -20,7 +20,7 @@ public class SensorServer implements Runnable{
 		DataInputStream inputStream = null;
 		try{
 			sensorSocket = new ServerSocket(9999);
-			System.out.println("connected");
+			System.out.println("Socket ready");
 		} catch(IOException e){
 			System.err.println("failed to create socket: " + e.getMessage());
 		}

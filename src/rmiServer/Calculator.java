@@ -1,10 +1,13 @@
 package rmiServer;
 
 import java.rmi.registry.Registry;
+
 import java.rmi.registry.LocateRegistry;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+
 import common.ICalculator;
+import common.PropertyHelper;
 
 public class Calculator implements ICalculator {
 
@@ -15,8 +18,8 @@ public class Calculator implements ICalculator {
 
 	public double calculateMean() throws RemoteException {
 		//TODO something meaningful to calculate a mean 
-		//PropertyHelper.
-		return 5.5;
+		
+		return Double.parseDouble(PropertyHelper.readFromProperty(ICalculator.fileName, "mean"));
 	}
 
 	public static void main(String[] args) {
