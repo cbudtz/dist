@@ -1,4 +1,7 @@
-/sensorServer
+/PropertyHelper.class
+/common
 /client
 /rmiServer
-/sensor
+/ServerMain.class
+/SensorMain.class
+/ClientMain.class

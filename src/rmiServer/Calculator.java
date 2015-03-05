@@ -6,6 +6,9 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.security.Policy;
 
+import common.ICalculator;
+import common.PropertyHelper;
+
 public class Calculator implements ICalculator {
 
 	public Calculator() throws RemoteException {
@@ -14,7 +17,7 @@ public class Calculator implements ICalculator {
 
 
 	public double calculateMean() throws RemoteException {
-		// TODO Auto-generated method stub
+		//PropertyHelper.
 		return 5.5;
 	}
 
@@ -22,8 +25,8 @@ public class Calculator implements ICalculator {
 		try {
 			Calculator calc = new Calculator();
 			ICalculator stub = (ICalculator) UnicastRemoteObject.exportObject(calc, 0);
-			Registry registry = LocateRegistry.createRegistry(1099);
-			registry.bind("Calculator", stub);
+			Registry registry = LocateRegistry.createRegistry(ICalculator.port);
+			registry.bind(ICalculator.calcName, stub);
 			System.out.println("RMIServer is running...");
 		} catch (Exception e) {
 			e.printStackTrace();

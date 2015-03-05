@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import rmiServer.ICalculator;
+import common.ICalculator;
 
 public class MeanClient {
 
@@ -16,7 +16,7 @@ public class MeanClient {
 			{
 				System.out.println("Trying to Connect to RMIServer");
 				Registry registry = LocateRegistry.getRegistry("localhost", 1099);
-				ICalculator stub = (ICalculator) registry.lookup("Calculator");
+				ICalculator stub = (ICalculator) registry.lookup(ICalculator.calcName);
 				System.out.println(stub.calculateMean());
 			} catch (RemoteException e) {
 				e.printStackTrace();
