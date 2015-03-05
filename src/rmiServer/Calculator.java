@@ -14,6 +14,7 @@ public class Calculator implements ICalculator {
 
 
 	public double calculateMean() throws RemoteException {
+		//TODO something meaningful to calculate a mean 
 		//PropertyHelper.
 		return 5.5;
 	}
