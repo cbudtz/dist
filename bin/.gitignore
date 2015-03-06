@@ -1,9 +1,3 @@
-/PropertyHelper.class
-/common
-/client
 /rmiServer
-/ServerMain.class
-/SensorMain.class
-/ClientMain.class
-/sensor
-/sensorServer
+/client
+/common

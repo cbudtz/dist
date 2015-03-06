@@ -1,43 +1,63 @@
 package client;
 
+import java.awt.EventQueue;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+import client.ClientWindow.ConnectionStatus;
 import common.ICalculator;
 
-public class MeanClient {
+public class MeanClient implements IMeanClient {
 
-	public static void main(String[] args) {
-		for (int i = 0;i<20;i++){
-
-			try
-			{
-				System.out.println("Trying to Connect to RMIServer");
-				Registry registry = LocateRegistry.getRegistry("localhost", 1099);
-				ICalculator stub = (ICalculator) registry.lookup(ICalculator.calcName);
-				System.out.println(stub.calculateMean());
-			} catch (RemoteException e) {
-				e.printStackTrace();
-				System.err.println("Not Able to connect to RMIServer");
-			} catch (NotBoundException e) {
-				System.err.println("No such remote object");
-				e.printStackTrace();
-			}
-			delay(1000);
-		}
-		System.err.println("Client terminated");
-	}
-
+	private IClientWindow clientWindow;
+	private ICalculator remoteObject;
 	
-	private static void delay(int delay) {
+	public static void main(String[] args) {
+		MeanClient mc = new MeanClient();
+		mc.run();
+	}
+
+	private void run() {
+		showGui();
+		connectServer();
+	}
+	
+	public void calculateMean(){
 		try {
-			Thread.sleep(delay);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.clientWindow.setMeanVal(this.remoteObject.calculateMean());
+		} catch (Exception e) {
+			this.clientWindow.setConnectionStatus(ConnectionStatus.FAILED);
+			this.clientWindow.setMeanVal(Double.NaN);
 		}
 	}
 
+	public void reConnect(){
+		System.out.println(this.remoteObject);
+		if(this.remoteObject == null){
+			connectServer();
+		}
+	}
+	private void connectServer() {
+		try
+		{
+			System.out.println("Trying to Connect to RMIServer");
+			clientWindow.setConnectionStatus(ConnectionStatus.CONNECTING);
+			Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+			this.remoteObject = (ICalculator) registry.lookup(ICalculator.calcName);
+			clientWindow.setConnectionStatus(ConnectionStatus.CONNECTED);
+		} catch (RemoteException e) {
+			clientWindow.setConnectionStatus(ConnectionStatus.FAILED);
+			System.err.println("Not Able to connect to RMIServer");
+		} catch (NotBoundException e) {
+			System.err.println("No such remote object");
+			clientWindow.setConnectionStatus(ConnectionStatus.FAILED);
+		}
+	}
+
+	private void showGui(){
+		this.clientWindow = new ClientWindow(this);
+		EventQueue.invokeLater(this.clientWindow);
+	}
 }

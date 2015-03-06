@@ -1,43 +1,40 @@
 package client;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
+
 import java.awt.FlowLayout;
+
 import javax.swing.JButton;
-import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
-import javax.swing.Box;
-import javax.swing.border.BevelBorder;
+import java.sql.Timestamp;
 
-public class ClientWindow {
+public class ClientWindow implements IClientWindow, ActionListener{
 
 	private JFrame frame;
-
+	public enum ConnectionStatus{CONNECTING, CONNECTED, FAILED};
+	private IMeanClient controller;
+	private JLabel lblConnectionStatusInfo;
+	private JLabel lblCurrentMeanVal;
+	private JButton btnReConnect;
+	private JButton btnGetMean;
+	private JLabel lblTimestamp;
+	
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ClientWindow window = new ClientWindow();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the application.
+	 * @param meanClient 
 	 */
-	public ClientWindow() {
+	public ClientWindow(IMeanClient controller) {
+		this.controller = controller;
 		initialize();
 	}
 
@@ -54,31 +51,104 @@ public class ClientWindow {
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel);
 		
-		JLabel lblCurrentMean = new JLabel("Current mean");
+		JLabel lblCurrentMean = new JLabel("Current mean:");
 		panel.add(lblCurrentMean);
 		
 		
 		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		panel.add(lblNewLabel_1);
-		lblNewLabel_1.setForeground(Color.BLACK);
+		this.lblCurrentMeanVal = new JLabel("NaN");
+		panel.add(this.lblCurrentMeanVal);
+		this.lblCurrentMeanVal.setForeground(Color.BLACK);
 		
-		JButton btnNewButton = new JButton("Get Mean");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		frame.getContentPane().add(btnNewButton);
 		
-		JPanel panel_1 = new JPanel();
-		frame.getContentPane().add(panel_1);
+//		JPanel panel_1 = new JPanel();
+//		frame.getContentPane().add(panel_1);
+//		JLabel lblTimestampTxt = new JLabel("last measurement from:");
+//		this.lblCurrentMeanVal.setForeground(Color.BLACK);
+//		panel_1.add(lblTimestampTxt);
+
+//		this.lblTimestamp = new JLabel("No values");
+//		this.lblTimestamp.setForeground(Color.BLACK);
+//		panel_1.add(this.lblTimestamp);
 		
-		JLabel lblConnectionStatus = new JLabel("connection status");
-		panel_1.add(lblConnectionStatus);
+		this.btnGetMean = new JButton("Get Mean");
+		btnGetMean.setActionCommand("getmean");
+		btnGetMean.addActionListener(this);
+		frame.getContentPane().add(btnGetMean);
 		
-		JLabel lblNewLabel = new JLabel("Connecting...");
-		lblNewLabel.setForeground(Color.ORANGE);
-		panel_1.add(lblNewLabel);
+		JPanel panel_2 = new JPanel();
+		frame.getContentPane().add(panel_2);
+		
+		JLabel lblConnectionStatus = new JLabel("connection status:");
+		panel_2.add(lblConnectionStatus);
+		
+		this.lblConnectionStatusInfo = new JLabel("Connecting...");
+		lblConnectionStatusInfo.setForeground(Color.ORANGE);
+		panel_2.add(lblConnectionStatusInfo);
+		
+		this.btnReConnect = new JButton("Reconnect");
+		btnReConnect.setVisible(false);
+		btnReConnect.setActionCommand("reconnect");
+		btnReConnect.addActionListener(this);
+		panel_2.add(btnReConnect);
+		
+		
+	}
+	
+	public void setConnectionStatus(ConnectionStatus status){
+		switch (status){
+		case CONNECTING:
+			this.lblConnectionStatusInfo.setText("Connecting...");
+			this.lblConnectionStatusInfo.setForeground(Color.ORANGE);
+			this.btnGetMean.setEnabled(false);
+			break;
+		case CONNECTED:
+			this.lblConnectionStatusInfo.setText("Connected.");
+			this.lblConnectionStatusInfo.setForeground(Color.GREEN);
+			this.btnGetMean.setEnabled(true);
+			this.btnReConnect.setVisible(false);
+			break;
+		case FAILED:
+			this.lblConnectionStatusInfo.setText("Connection to server failed.");
+			this.lblConnectionStatusInfo.setForeground(Color.RED);
+			this.btnGetMean.setEnabled(false);
+			this.btnReConnect.setVisible(true);
+			break;
+		}
+	}
+	
+	public void setMeanVal(double value){
+		this.lblCurrentMeanVal.setText(String.valueOf(value));
+	}
+
+	public void setVisible(boolean visible) {
+		this.frame.setVisible(visible);	
+	}
+
+	@Override
+	public void run() {
+		this.frame.setVisible(true);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg) {
+		switch (arg.getActionCommand()) {
+		case "getmean":
+			this.controller.calculateMean();
+			break;
+		case "reconnect":
+			this.controller.reConnect();
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void setMeanTimestamp(Timestamp time) {
+		System.out.println(time);
+		this.lblTimestamp.setText(time == null ? "no values" : time.toString());
+		
 	}
 
 }

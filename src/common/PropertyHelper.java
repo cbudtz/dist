@@ -1,5 +1,6 @@
 package common;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -7,17 +8,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.sql.Timestamp;
 import java.util.Properties;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public abstract class PropertyHelper {
 	public static ReadWriteLock lock = new ReentrantReadWriteLock(true);//Fancy lock to ensure synchronized read/writes
-
 	public static void writeToProperty(String key, String value){		
 		writeToProperty("config", key, value);
 	}
 
+	public static Timestamp getFileTimestamp(){
+			lock.readLock().lock();
+			File f = new File("temperature.properties");
+			long time = f.lastModified();
+			lock.readLock().unlock();
+			return time == 0 ? new Timestamp(time) : null;
+			
+		
+	}
 	public static void writeToProperty(String filename, String key, String value){
 		lock.writeLock().lock();
 
