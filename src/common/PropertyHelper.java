@@ -15,7 +15,7 @@ public class PropertyHelper {
 	public static ReadWriteLock lock = new ReentrantReadWriteLock(true);//Fancy lock to ensure synchronized read/writes
 
 	public static void writeToProperty(String key, String value){		
-		writeToProperty("config", key, value);		
+		writeToProperty("config", key, value);
 	}
 
 	public static void writeToProperty(String filename, String key, String value){
@@ -65,6 +65,9 @@ public class PropertyHelper {
 
 			in = new FileInputStream(filename + ".properties");
 			prop.load(in);
+			prop.size();
+//			File test = new File(filename+".properties");
+//			test.lastModified();
 			value = prop.getProperty(key);
 
 		} catch (UnsupportedEncodingException e) {
