@@ -11,7 +11,7 @@ import java.util.Properties;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class PropertyHelper {
+public abstract class PropertyHelper {
 	public static ReadWriteLock lock = new ReentrantReadWriteLock(true);//Fancy lock to ensure synchronized read/writes
 
 	public static void writeToProperty(String key, String value){		
