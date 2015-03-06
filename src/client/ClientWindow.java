@@ -10,12 +10,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
+import javax.swing.Box;
+import javax.swing.border.BevelBorder;
 
 public class ClientWindow {
 
 	private JFrame frame;
-	private JTextField textField;
-	private JTextField textField_1;
 
 	/**
 	 * Launch the application.
@@ -48,6 +49,7 @@ public class ClientWindow {
 		frame.setBounds(100, 100, 460, 109);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
 		
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel);
@@ -55,9 +57,11 @@ public class ClientWindow {
 		JLabel lblCurrentMean = new JLabel("Current mean");
 		panel.add(lblCurrentMean);
 		
-		textField_1 = new JTextField("-");
-		panel.add(textField_1);
-		textField_1.setColumns(10);
+		
+		
+		JLabel lblNewLabel_1 = new JLabel("New label");
+		panel.add(lblNewLabel_1);
+		lblNewLabel_1.setForeground(Color.BLACK);
 		
 		JButton btnNewButton = new JButton("Get Mean");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -72,9 +76,9 @@ public class ClientWindow {
 		JLabel lblConnectionStatus = new JLabel("connection status");
 		panel_1.add(lblConnectionStatus);
 		
-		textField = new JTextField();
-		panel_1.add(textField);
-		textField.setColumns(10);
+		JLabel lblNewLabel = new JLabel("Connecting...");
+		lblNewLabel.setForeground(Color.ORANGE);
+		panel_1.add(lblNewLabel);
 	}
 
 }
