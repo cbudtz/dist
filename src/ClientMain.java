@@ -6,6 +6,10 @@ import java.rmi.registry.Registry;
 import common.ICalculator;
 
 
+/**
+ * @author Christain og Runi
+ * Klasse til at starte en RMI- klient, der forsøger at forbinde 20 gange til RMI-server
+ */
 public class ClientMain {
 
 	public static void main(String[] args) {
