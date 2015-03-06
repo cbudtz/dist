@@ -49,8 +49,6 @@ public class SensorServer implements Runnable{
 
 				// writing temperature measurement to file 
 				if(writeToProperty(String.valueOf(index), temp)){
-					// calculating mean and saving in file
-					calculateMean(index);
 					index++;	
 				}
 
@@ -77,13 +75,6 @@ public class SensorServer implements Runnable{
 		}
 	}
 
-	private void calculateMean(int size) {
-		//float total = Float.valueOf(PropertyHelper.readWriteProperty(false, FILE_NAME, "total", null));
-		float total = Float.valueOf(PropertyHelper.readFromProperty(FILE_NAME, "total"));
-
-		//PropertyHelper.readWriteProperty(true, FILE_NAME, "mean", String.valueOf(total/(size+1)));
-		PropertyHelper.writeToProperty(FILE_NAME, "mean", String.valueOf(total/(size+1)));
-	}
 	/**
 	 * verifies input and write data to file
 	 * @param key should be integer so the index can be used for calculating total and mean
@@ -103,18 +94,14 @@ public class SensorServer implements Runnable{
 		}catch(NumberFormatException e){
 			return false;
 		}		
-		//PropertyHelper.readWriteProperty(true, FILE_NAME, key, value);
 		PropertyHelper.writeToProperty(FILE_NAME, key, value);
-		//String total = PropertyHelper. readWriteProperty(false, FILE_NAME, "total", null);
-		String total = PropertyHelper.readFromProperty(FILE_NAME, "total");
-		if(total == null){
-			//PropertyHelper.readWriteProperty(true, FILE_NAME, "total", value);
-			PropertyHelper.writeToProperty(FILE_NAME, "total", value);
-		}else{
-			float newTotal = Float.valueOf(total)+Float.valueOf(value);
-			//PropertyHelper.readWriteProperty(true, FILE_NAME, "total", String.valueOf(newTotal));
-			PropertyHelper.writeToProperty(FILE_NAME, "total", String.valueOf(newTotal));
-		}
+//		String total = PropertyHelper.readFromProperty(FILE_NAME, "total");
+//		if(total == null){
+//			PropertyHelper.writeToProperty(FILE_NAME, "total", value);
+//		}else{
+//			float newTotal = Float.valueOf(total)+Float.valueOf(value);
+//			PropertyHelper.writeToProperty(FILE_NAME, "total", String.valueOf(newTotal));
+//		}
 		return true;
 	}
 }

@@ -16,7 +16,7 @@ public class ClientMain {
 				System.out.println("Trying to Connect to RMIServer");
 				Registry registry = LocateRegistry.getRegistry("localhost", 1099);
 				ICalculator stub = (ICalculator) registry.lookup(ICalculator.calcName);
-				System.out.println(stub.calculateMean());
+				System.out.println("mean: " + stub.calculateMean());
 			} catch (RemoteException e) {
 				e.printStackTrace();
 				System.err.println("Not Able to connect to RMIServer");
