@@ -14,20 +14,28 @@ public class TestUDPClient implements Runnable{
 
 	public TestUDPClient() throws SocketException {
 		super();
-		this.socket = new DatagramSocket(PORT);
+		int i=0;
+		while (true){
+			try {
+				this.socket = new DatagramSocket(PORT+i);
+				break;
+			} catch (Exception e ) {
+				i++;
+			}
+		}
 	}
 	public static void main(String[] args) {
 		//test main
-				System.out.println("Starting client");
-				TestUDPClient t;
-				try {
-					t = new TestUDPClient();
-					Thread thread = new Thread(t);
-					thread.start();
-				} catch (SocketException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		System.out.println("Starting client");
+		TestUDPClient t;
+		try {
+			t = new TestUDPClient();
+			Thread thread = new Thread(t);
+			thread.start();
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 
 	}
@@ -45,7 +53,7 @@ public class TestUDPClient implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }

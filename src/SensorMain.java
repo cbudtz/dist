@@ -5,7 +5,7 @@ import sensor.SensorController;
 
 public class SensorMain {
 	static String server = "127.0.0.1"; //args[0];
-	static int port = 9999; //Integer.parseInt(args[1]);
+	static int port = 13400; //Integer.parseInt(args[1]);
 	static volatile LinkedList<String> queue = new LinkedList<>();
 	static final String fileName = "temperature";
 	
