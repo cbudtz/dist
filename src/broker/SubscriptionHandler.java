@@ -29,36 +29,27 @@ public class SubscriptionHandler implements Runnable {
 				Socket clientSocket = subSocket.accept();
 				System.out.println("Subscriber connected");
 				DataInputStream inputStream = new DataInputStream(clientSocket.getInputStream());
-				
-				char in;
-				int charNo = 0;
-				char[] temp = new char[DATALength];
-				// waiting for data
-				while((in = (char) inputStream.readByte()) == '_'){}
-				do{
-					// if trying to write data longer than 5 chars at a time
-					// or if data starting with ',' or '.' breaks and runs try clause again
-					if(charNo >= DATALength){
-						System.err.println("wrong data format received");
-						break; // goes outside whole try catch statement and closes client connection
-					}
-					temp[charNo] = in;
-					charNo++;
-				}while((in = (char) inputStream.readByte()) != '_');
+				String data = inputStream.readUTF();
+				parse(data);
 
-				// writing temperature measurement to file 
-				if(writeToProperty(String.valueOf(index), temp)){
-					index++;	
-				}
-				
+
 			} catch (IOException e) {
 				System.out.println("Failed to accept connection from TCP client - Subscription handler");
 				e.printStackTrace();
 			}
-			
+
 		}
-		
+
+
+	}
+
+	private void parse(String data) {
+		String[] message = data.split(";");
+		if (message[0].contains("sub")){
+			broker.addSubscription(message[1], message[2]);
+		}
 
 	}
 
 }
+

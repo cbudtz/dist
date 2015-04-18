@@ -5,13 +5,15 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
+import broker.EventBroker;
+
 /**
  * 
  * @author Christian s134000
  *
  */
 public class TestUDPServer implements Runnable{
-	final int PORT = 13400;
+	final int PORT = EventBroker.SEND_PORT;
 	private DatagramSocket socket;
 
 	public TestUDPServer() throws SocketException {

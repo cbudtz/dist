@@ -5,7 +5,7 @@ public class EventDispatcher implements Runnable {
 	private int publisherPort;
 	private EventBroker broker;
 
-	public EventDispatcher(int publisherPort, EventBroker eventBroker) {
+	public EventDispatcher(int publisherPort, int sendPort, EventBroker eventBroker) {
 		this.publisherPort = publisherPort;
 		this.broker = eventBroker;
 

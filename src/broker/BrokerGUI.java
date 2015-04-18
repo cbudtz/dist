@@ -10,12 +10,12 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 public class BrokerGUI {
-	JList<Object> subscriberLog;
-	JList<Object> publicationLog;
-	LinkedList<String> subscriberLogData = new LinkedList<>();
-	LinkedList<String> publicationLogData = new LinkedList<>();
+	private JList<Object> subscriberLog;
+	private JList<Object> publicationLog;
+	private LinkedList<String> subscriberLogData = new LinkedList<>();
+	private LinkedList<String> publicationLogData = new LinkedList<>();
 	
-	private JFrame frame;
+	private JFrame frmEventbroker;
 	private JTextField subPortTextField;
 	private JTextField receivePortTextField;
 	private JTextField sendPortTextField;
@@ -28,9 +28,12 @@ public class BrokerGUI {
 			public void run() {
 				try {
 					BrokerGUI window = new BrokerGUI();
-					window.frame.setVisible(true);
+					window.frmEventbroker.setVisible(true);
 					window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");window.addToSubLog("Test");
 					window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");window.addToPubLog("Test");
+					window.setSubPort(23);
+					window.setReceivePort(24);
+					window.setSendPort(25);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -50,14 +53,15 @@ public class BrokerGUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 860, 375);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmEventbroker = new JFrame();
+		frmEventbroker.setTitle("EventBroker");
+		frmEventbroker.setBounds(100, 100, 860, 375);
+		frmEventbroker.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmEventbroker.getContentPane().setLayout(null);
 		//Scroll Pane for subscriptions
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 44, 242, 282);
-		frame.getContentPane().add(scrollPane);
+		frmEventbroker.getContentPane().add(scrollPane);
 		//Jlist for subscriptions
 		JList subLog = new JList();
 		this.subscriberLog = subLog;
@@ -65,7 +69,7 @@ public class BrokerGUI {
 		//ScrollPane for publications
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(592, 44, 242, 282);
-		frame.getContentPane().add(scrollPane_1);
+		frmEventbroker.getContentPane().add(scrollPane_1);
 		//Jlist for publications
 		JList<Object> publog = new JList<Object>();
 		this.publicationLog = publog;
@@ -73,41 +77,41 @@ public class BrokerGUI {
 		
 		JLabel lblNewLabel = new JLabel("Subscription Log");
 		lblNewLabel.setBounds(10, 11, 125, 22);
-		frame.getContentPane().add(lblNewLabel);
+		frmEventbroker.getContentPane().add(lblNewLabel);
 		
 		JLabel lblPublicationLog = new JLabel("Publication Log");
 		lblPublicationLog.setBounds(592, 11, 125, 22);
-		frame.getContentPane().add(lblPublicationLog);
+		frmEventbroker.getContentPane().add(lblPublicationLog);
 		
 		JLabel lblSubscriptionPort = new JLabel("Subscription Port");
-		lblSubscriptionPort.setBounds(262, 48, 96, 22);
-		frame.getContentPane().add(lblSubscriptionPort);
+		lblSubscriptionPort.setBounds(262, 48, 110, 22);
+		frmEventbroker.getContentPane().add(lblSubscriptionPort);
 		
 		JLabel lblReceivePort = new JLabel("Receive Port");
-		lblReceivePort.setBounds(262, 76, 96, 22);
-		frame.getContentPane().add(lblReceivePort);
+		lblReceivePort.setBounds(262, 76, 110, 22);
+		frmEventbroker.getContentPane().add(lblReceivePort);
 		
 		JLabel lblSendPort = new JLabel("Send Port");
-		lblSendPort.setBounds(262, 104, 96, 22);
-		frame.getContentPane().add(lblSendPort);
+		lblSendPort.setBounds(262, 104, 110, 22);
+		frmEventbroker.getContentPane().add(lblSendPort);
 		
 		subPortTextField = new JTextField();
 		subPortTextField.setText("...");
 		subPortTextField.setBounds(382, 48, 69, 22);
-		frame.getContentPane().add(subPortTextField);
+		frmEventbroker.getContentPane().add(subPortTextField);
 		subPortTextField.setColumns(10);
 		
 		receivePortTextField = new JTextField();
 		receivePortTextField.setText("...");
 		receivePortTextField.setColumns(10);
 		receivePortTextField.setBounds(382, 76, 69, 22);
-		frame.getContentPane().add(receivePortTextField);
+		frmEventbroker.getContentPane().add(receivePortTextField);
 		
 		sendPortTextField = new JTextField();
 		sendPortTextField.setText("...");
 		sendPortTextField.setColumns(10);
 		sendPortTextField.setBounds(382, 104, 69, 22);
-		frame.getContentPane().add(sendPortTextField);
+		frmEventbroker.getContentPane().add(sendPortTextField);
 		
 		
 	}
@@ -132,6 +136,18 @@ public class BrokerGUI {
 	
 	public void setSubPort(int port){
 		subPortTextField.setText(String.valueOf(port));
+	}
+	
+	public void setReceivePort(int port){
+		receivePortTextField.setText(String.valueOf(port));
+	}
+	
+	public void setSendPort(int port){
+		sendPortTextField.setText(String.valueOf(port));
+	}
+	
+	public void setVisible(boolean b){
+		frmEventbroker.setVisible(b);
 	}
 
 }

@@ -3,11 +3,11 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 import rmiServer.Calculator;
-import sensorServer.SensorServer;
+import sensorServer.TempListener;
 import common.ICalculator;
 
 
-public class ServerMain {
+public class TempServerMain {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub Start an RMI server and SensorServer in different Threads.
@@ -24,7 +24,7 @@ public class ServerMain {
 		System.out.println("RMIServer started");
 		
 		//Start sensor server
-		SensorServer sensorServer = new SensorServer();
+		TempListener sensorServer = new TempListener();
 		Thread sensorServerThread = new Thread(sensorServer);
 		sensorServerThread.start();
 		System.out.println("Sensor Server started");

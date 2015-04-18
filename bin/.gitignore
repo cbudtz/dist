@@ -1,3 +1,4 @@
-/rmiServer
-/client
-/common
+/broker
+/test
+/TempServerMain.class
+/sensorServer

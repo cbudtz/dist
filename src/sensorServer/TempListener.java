@@ -2,24 +2,34 @@ package sensorServer;
 import java.net.*;
 import java.io.*;
 
+import broker.EventBroker;
 import common.PropertyHelper;
 
 
-public class SensorServer implements Runnable{
+public class TempListener implements Runnable{
+	final int PORT = EventBroker.SEND_PORT;
+	private DatagramSocket socket;
 
 	public static final String FILE_NAME = "temperature";
 	public static final int DATA_SIZE = 5;
 	public static void main(String[] args){
-		SensorServer s = new SensorServer();
+		TempListener s = new TempListener();
 		s.run();
 	}
 
 	public void run(){
-		ServerSocket sensorSocket = null;
-		Socket clientSocket = null;
-		DataInputStream inputStream = null;
+		//ServerSocket sensorSocket = null;
+		//Socket clientSocket = null;
+		//TODO set up tcp socket and subscribe...
+		
+		
+		//DataInputStream inputStream = null;
+		//TODO setup listening UDP socket.
+		//Setting up UDP listening socket
 		try{
-			sensorSocket = new ServerSocket(9999);
+			socket = new DatagramSocket(PORT);
+			
+			sensorSocket = new ServerSocket(EventBroker.SEND_PORT);
 			System.out.println("Socket ready");
 		} catch(IOException e){
 			System.err.println("failed to create socket: " + e.getMessage());

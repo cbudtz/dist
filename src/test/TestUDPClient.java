@@ -7,8 +7,10 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.SocketException;
 
+import broker.EventBroker;
+
 public class TestUDPClient implements Runnable{
-	final int PORT = 13400;
+	final int PORT = EventBroker.SEND_PORT;
 	private DatagramSocket socket;
 
 	public TestUDPClient() throws SocketException {
