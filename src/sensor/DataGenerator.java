@@ -36,8 +36,7 @@ public class DataGenerator implements Runnable{
     
     // Convert to char array, in format '_''x''y''.''z''_'
     String convert(float temp) {
-    	String tempString = "_" + String.format("%.2f", temp) + "_";
-    	//char[] tempArray = tempString.toCharArray();
+    	String tempString =  String.format("%.2f", temp);
     	
     	return tempString;
     }

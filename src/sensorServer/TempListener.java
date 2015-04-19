@@ -7,8 +7,16 @@ import common.PropertyHelper;
 
 
 public class TempListener implements Runnable{
-	final int PORT = EventBroker.SEND_PORT;
-	private DatagramSocket socket;
+	private static final String TEMP = "temp";
+	private static final String SUB = "sub";
+	private static final String UNROLL = "unroll"; 
+
+	final int BROKER_PORT = EventBroker.SEND_PORT;
+	final int OWN_PORT = EventBroker.SUBSCRIBER_PORT;
+	final String BrokerIP = "localhost"; //TODO UDP discovery of broker
+	final String OwnIP = "localhost";
+	final int SUBSCRIPTION_PORT = EventBroker.SUBSCRIPTION_PORT;
+	private DatagramSocket incomingSocket;
 
 	public static final String FILE_NAME = "temperature";
 	public static final int DATA_SIZE = 5;
@@ -21,15 +29,22 @@ public class TempListener implements Runnable{
 		//ServerSocket sensorSocket = null;
 		//Socket clientSocket = null;
 		//TODO set up tcp socket and subscribe...
-		
-		
+		try {
+			sendMessage(SUB, OwnIP, TEMP);
+		} catch (UnknownHostException e1) {
+			System.out.println("Not able to connect to broker");
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		//DataInputStream inputStream = null;
 		//TODO setup listening UDP socket.
 		//Setting up UDP listening socket
 		try{
-			socket = new DatagramSocket(PORT);
-			
-			sensorSocket = new ServerSocket(EventBroker.SEND_PORT);
+			incomingSocket = new DatagramSocket(OWN_PORT);
+
 			System.out.println("Socket ready");
 		} catch(IOException e){
 			System.err.println("failed to create socket: " + e.getMessage());
@@ -37,52 +52,43 @@ public class TempListener implements Runnable{
 		int index = PropertyHelper.findLastIndex();
 		while(true){
 			try{
-				clientSocket = sensorSocket.accept();			
-				System.out.println("client connected");
-				inputStream = new DataInputStream(clientSocket.getInputStream());
+				byte[] buffer = new byte[256];
+				DatagramPacket udpPacket = new DatagramPacket(buffer, buffer.length);
+				incomingSocket.receive(udpPacket);
+				String data = new String(udpPacket.getData());
+				String[] message = data.split(";");
 
-				char in;
-				int charNo = 0;
-				char[] temp = new char[DATA_SIZE];
-				// waiting for data
-				while((in = (char) inputStream.readByte()) == '_'){}
-				do{
-					// if trying to write data longer than 5 chars at a time
-					// or if data starting with ',' or '.' breaks and runs try clause again
-					if(charNo >= DATA_SIZE){
-						System.err.println("wrong data format received");
-						break; // goes outside whole try catch statement and closes client connection
-					}
-					temp[charNo] = in;
-					charNo++;
-				}while((in = (char) inputStream.readByte()) != '_');
-
-				// writing temperature measurement to file 
-				if(writeToProperty(String.valueOf(index), temp)){
+				if(writeToProperty(String.valueOf(index), message[1])){
 					index++;	
 				}
 
 
 			}catch(IOException e){
-				System.err.println("failed to connect to client: " + e.getMessage());
-			}
-
-			try {
-				if(!clientSocket.isConnected()){
-					clientSocket.close();	
-				}
-			} catch (IOException e) {
-				System.err.println("could not close client connection: " + e.getMessage());
+				System.err.println("failed to read Packet: " + e.getMessage());
 				break;
 			}
+
+			
+			
 		}	
+		
+		incomingSocket.close();
 		try {
-			if(!sensorSocket.isClosed()){
-				sensorSocket.close();
-			}
+			sendMessage(UNROLL, BrokerIP, TEMP);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println("serversocket failed to close: " + e.getMessage());
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+	}
+
+	private void sendMessage(String head, String ip, String topic) throws UnknownHostException, IOException {
+		Socket subSocket = new Socket(BrokerIP, SUBSCRIPTION_PORT);
+		DataOutputStream out = new DataOutputStream(subSocket.getOutputStream());
+		out.writeUTF(head + ";" + ip +";"+topic);
+		subSocket.close();
 	}
 
 	/**
@@ -91,6 +97,7 @@ public class TempListener implements Runnable{
 	 * @param val char[] that will be verified, can have the form (\d+((.|,)(\d+))?)
 	 * @return if not able to convert to float false will be returned else data will be saved and true returned
 	 */
+	@SuppressWarnings("unused")
 	private boolean writeToProperty(String key, char[] val){
 		String value = "";
 		for(int i = 0; i<val.length;i++){
@@ -98,6 +105,10 @@ public class TempListener implements Runnable{
 				value = value + val[i];
 			}
 		}
+		return writeToProperty(key, value);
+	}
+	private boolean writeToProperty(String key, String value){
+
 		value = value.replace(',', '.');
 		try{
 			Float.valueOf(value);
@@ -105,13 +116,13 @@ public class TempListener implements Runnable{
 			return false;
 		}		
 		PropertyHelper.writeToProperty(FILE_NAME, key, value);
-//		String total = PropertyHelper.readFromProperty(FILE_NAME, "total");
-//		if(total == null){
-//			PropertyHelper.writeToProperty(FILE_NAME, "total", value);
-//		}else{
-//			float newTotal = Float.valueOf(total)+Float.valueOf(value);
-//			PropertyHelper.writeToProperty(FILE_NAME, "total", String.valueOf(newTotal));
-//		}
+		//		String total = PropertyHelper.readFromProperty(FILE_NAME, "total");
+		//		if(total == null){
+		//			PropertyHelper.writeToProperty(FILE_NAME, "total", value);
+		//		}else{
+		//			float newTotal = Float.valueOf(total)+Float.valueOf(value);
+		//			PropertyHelper.writeToProperty(FILE_NAME, "total", String.valueOf(newTotal));
+		//		}
 		return true;
 	}
 }

@@ -1,20 +1,32 @@
 package sensor;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ConnectException;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+import java.net.SocketException;
+import broker.EventBroker;
 
 class Client implements Runnable{
+	private static final String TEMP = "temp";
 	SensorController ctrl;
-	private String host;
+	private String brokerIP;
 	private int port;
+	
+	private DatagramSocket sendSocket;
 
 	Client(SensorController ctrl, String host, int port){
 		this.ctrl = ctrl;
-		this.host = host;
+		this.brokerIP = host;
 		this.port = port;
+		try {
+			this.sendSocket = new DatagramSocket();
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -22,7 +34,7 @@ class Client implements Runnable{
 		while(true){
 			while(!ctrl.queue.isEmpty()){
 				try{
-					pushData(host, port, ctrl.queue.peek());
+					pushData(brokerIP, port, ctrl.queue.peek());
 					System.out.println("pushed " + ctrl.queue.peek());
 					ctrl.queue.pop();
 				} catch (ConnectException ce){
@@ -46,38 +58,15 @@ class Client implements Runnable{
 	}
 
 	public void pushData(String hostname, int port, String data) throws ConnectException {
-		Socket socket = null;
-		DataOutputStream out = null;
-
-		/* Initialize socket and stream */
+		byte[] buffer = new byte[EventBroker.BUFFER_SIZE];
+		buffer = (TEMP + ";" + data + ";" + "1").getBytes();
+		SocketAddress socketAddress = new InetSocketAddress(brokerIP, EventBroker.RECEIVE_PORT);
+		DatagramPacket packet = new DatagramPacket(buffer, buffer.length, socketAddress);
 		try {
-			socket = new Socket(hostname, port);
-			out = new DataOutputStream(socket.getOutputStream());
-		} catch (UnknownHostException e) {
-			System.err.println("Trying to connect to unknown host: " + e);
+			sendSocket.send(packet);
 		} catch (IOException e) {
-			System.err.println("IOException:  " + e);
-			throw new ConnectException();
-		} finally {
-
-			/* Write data out */
-			if (socket != null && out != null) {
-				try {
-					out.writeBytes(data);
-				} 
-				catch (IOException e) {
-					System.err.println("Can't write to outputstream" + e);
-				}
-
-				/* Close resources */
-				try {
-					out.close();
-					socket.close();
-				} catch (IOException e) {
-					System.err.println("Could not close socket" + e);
-				}
-			}
-
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

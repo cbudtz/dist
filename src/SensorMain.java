@@ -10,7 +10,7 @@ public class SensorMain {
 	static final String fileName = "temperature";
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub Start a number of Sensors
+		//Initializes 10 sensor instances
 		SensorController[] sensors = new SensorController[10];
 		for (SensorController s : sensors){
 		s = new SensorController(server,port);

@@ -55,12 +55,12 @@ public class BrokerGUI {
 	private void initialize() {
 		frmEventbroker = new JFrame();
 		frmEventbroker.setTitle("EventBroker");
-		frmEventbroker.setBounds(100, 100, 860, 375);
+		frmEventbroker.setBounds(100, 100, 1178, 442);
 		frmEventbroker.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmEventbroker.getContentPane().setLayout(null);
 		//Scroll Pane for subscriptions
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 44, 242, 282);
+		scrollPane.setBounds(10, 44, 437, 349);
 		frmEventbroker.getContentPane().add(scrollPane);
 		//Jlist for subscriptions
 		JList subLog = new JList();
@@ -68,7 +68,7 @@ public class BrokerGUI {
 		scrollPane.setViewportView(subLog);
 		//ScrollPane for publications
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(592, 44, 242, 282);
+		scrollPane_1.setBounds(715, 44, 437, 349);
 		frmEventbroker.getContentPane().add(scrollPane_1);
 		//Jlist for publications
 		JList<Object> publog = new JList<Object>();
@@ -80,37 +80,37 @@ public class BrokerGUI {
 		frmEventbroker.getContentPane().add(lblNewLabel);
 		
 		JLabel lblPublicationLog = new JLabel("Publication Log");
-		lblPublicationLog.setBounds(592, 11, 125, 22);
+		lblPublicationLog.setBounds(715, 11, 125, 22);
 		frmEventbroker.getContentPane().add(lblPublicationLog);
 		
 		JLabel lblSubscriptionPort = new JLabel("Subscription Port");
-		lblSubscriptionPort.setBounds(262, 48, 110, 22);
+		lblSubscriptionPort.setBounds(516, 44, 110, 22);
 		frmEventbroker.getContentPane().add(lblSubscriptionPort);
 		
 		JLabel lblReceivePort = new JLabel("Receive Port");
-		lblReceivePort.setBounds(262, 76, 110, 22);
+		lblReceivePort.setBounds(516, 72, 110, 22);
 		frmEventbroker.getContentPane().add(lblReceivePort);
 		
 		JLabel lblSendPort = new JLabel("Send Port");
-		lblSendPort.setBounds(262, 104, 110, 22);
+		lblSendPort.setBounds(516, 100, 110, 22);
 		frmEventbroker.getContentPane().add(lblSendPort);
 		
 		subPortTextField = new JTextField();
 		subPortTextField.setText("...");
-		subPortTextField.setBounds(382, 48, 69, 22);
+		subPortTextField.setBounds(636, 44, 69, 22);
 		frmEventbroker.getContentPane().add(subPortTextField);
 		subPortTextField.setColumns(10);
 		
 		receivePortTextField = new JTextField();
 		receivePortTextField.setText("...");
 		receivePortTextField.setColumns(10);
-		receivePortTextField.setBounds(382, 76, 69, 22);
+		receivePortTextField.setBounds(636, 72, 69, 22);
 		frmEventbroker.getContentPane().add(receivePortTextField);
 		
 		sendPortTextField = new JTextField();
 		sendPortTextField.setText("...");
 		sendPortTextField.setColumns(10);
-		sendPortTextField.setBounds(382, 104, 69, 22);
+		sendPortTextField.setBounds(636, 100, 69, 22);
 		frmEventbroker.getContentPane().add(sendPortTextField);
 		
 		

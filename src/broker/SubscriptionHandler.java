@@ -15,7 +15,7 @@ public class SubscriptionHandler implements Runnable {
 		try {
 			this.subSocket = new ServerSocket(subPort);
 		} catch (IOException e) {
-			System.out.println("Socket Creation failed in Subscription Handler");
+			System.out.println("Socket Creation failed in Subscription Handler\n Another broker might be started on same IP");
 			e.printStackTrace();
 		}
 		this.broker = broker;
