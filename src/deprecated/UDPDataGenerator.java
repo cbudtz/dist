@@ -1,4 +1,4 @@
-package udpSensor;
+package deprecated;
 
 import java.util.Random;
 

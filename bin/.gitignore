@@ -4,3 +4,5 @@
 /sensorServer
 /broker
 /sensor
+/deprecated
+/udpSensor

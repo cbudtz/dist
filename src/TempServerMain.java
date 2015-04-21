@@ -7,10 +7,14 @@ import sensorServer.TempListener;
 import common.ICalculator;
 
 
+/**
+ * @author Christian Budtz
+ * Class for instantiating RMI registry, RMI server and subscriber
+ */
 public class TempServerMain {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub Start an RMI server and SensorServer in different Threads.
+		//  Start an RMI server and SensorServer in different Threads.
 		//Start RMI server
 		try {
 			Calculator calc = new Calculator();

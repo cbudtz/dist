@@ -3,9 +3,13 @@ import java.util.LinkedList;
 import sensor.SensorController;
 
 
+/**
+ * @author Christian Budtz
+ * Class to initialize 10 sensor processes to demonstrate functionality
+ */
 public class SensorMain {
-	static String server = "127.0.0.1"; //args[0];
-	static int port = 13400; //Integer.parseInt(args[1]);
+	static String server = "localhost"; //Hardcoded eventbroker address
+	static int port = 13400; //random port
 	static volatile LinkedList<String> queue = new LinkedList<>();
 	static final String fileName = "temperature";
 	

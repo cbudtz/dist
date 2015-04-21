@@ -1,4 +1,4 @@
-package udpSensor;
+package deprecated;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -9,11 +9,11 @@ import java.net.UnknownHostException;
 import sensor.SensorController;
 
 public class UDPClient implements Runnable{
-	udpSensor.UDPSensorController ctrl;
+	deprecated.UDPSensorController ctrl;
 	private String host;
 	private int port;
 
-	UDPClient(udpSensor.UDPSensorController sensorController, int port){
+	UDPClient(deprecated.UDPSensorController sensorController, int port){
 		this.ctrl = sensorController;
 		this.port = port;
 	}

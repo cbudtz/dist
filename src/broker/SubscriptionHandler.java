@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class SubscriptionHandler implements Runnable {
+	private static final int TIME_OUT = 500;
 	private ServerSocket subSocket;
 	private EventBroker broker;
 	final int DATALength = 100;
@@ -24,18 +25,23 @@ public class SubscriptionHandler implements Runnable {
 	@Override
 	public void run() {
 		while (true){
-			try {
+			try  {
 				//Waiting for connections
 				Socket clientSocket = subSocket.accept();
+				clientSocket.setSoTimeout(TIME_OUT);//To avoid stupid subscribers from locking up system ;)
+				//TODO could be improved with a seperate process so multiple subscribers could subscribe simultaneously
 				System.out.println("Subscriber connected");
 				DataInputStream inputStream = new DataInputStream(clientSocket.getInputStream());
 				String data = inputStream.readUTF();
 				parse(data);
-
+				clientSocket.close();
 
 			} catch (IOException e) {
 				System.out.println("Failed to accept connection from TCP client - Subscription handler");
 				e.printStackTrace();
+				
+			} finally{
+				
 			}
 
 		}

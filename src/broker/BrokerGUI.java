@@ -9,6 +9,10 @@ import javax.swing.JList;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+/**
+ * @author Christian Budtz
+ * Convenience GUI - to show what happens in broker
+ */
 public class BrokerGUI {
 	private JList<Object> subscriberLog;
 	private JList<Object> publicationLog;
@@ -21,7 +25,7 @@ public class BrokerGUI {
 	private JTextField sendPortTextField;
 
 	/**
-	 * Launch the application.
+	 * Test Main
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

@@ -1,6 +1,11 @@
 import broker.EventBroker;
 
 
+/**
+ * @author Christian Budtz
+ * Class for initializing EventBroker Middleware
+ *
+ */
 public class BrokerMain {
 
 	public static void main(String[] args) {

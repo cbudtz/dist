@@ -34,19 +34,25 @@ public class EventDispatcher implements Runnable {
 	public void run() {
 		while (true){
 			String [] message = receivePacket();//wait for new udp packet
-			String topic = message[0]; //extract data
-			String value = message[1];
-			String sensorID = message[2];
-			LinkedList<String> subscribers = broker.getSubscribersFromTopic(topic); //retrive subscriberList
-			broker.getGui().addToPubLog("publication received: " + topic +" value:"+ value + "sensorID:" + sensorID);
-			if (subscribers!=null){
-				for (String subscriber : subscribers) {
-					sendPacket(subscriber, topic, value, sensorID);
-					broker.getGui().addToPubLog("publication dispatched to: " + subscriber);
+			//check for malformed package
+			if(message.length<3){
+				broker.getGui().addToPubLog("Malformed package received:" + message);
+			} else {
+				//handle package - excess data trimmed...
+
+				String topic = message[0]; //extract data
+				String value = message[1];
+				String sensorID = message[2];
+				LinkedList<String> subscribers = broker.getSubscribersFromTopic(topic); //retrive subscriberList
+				broker.getGui().addToPubLog("publication received: " + topic +" value:"+ value + "sensorID:" + sensorID);
+				if (subscribers!=null){
+					for (String subscriber : subscribers) {
+						sendPacket(subscriber, topic, value, sensorID);
+						broker.getGui().addToPubLog("publication dispatched to: " + subscriber);
+					}
 				}
+
 			}
-
-
 
 		}
 
