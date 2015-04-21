@@ -14,13 +14,15 @@ class Client implements Runnable{
 	SensorController ctrl;
 	private String brokerIP;
 	private int port;
+	private int sensorID;
 	
 	private DatagramSocket sendSocket;
 
-	Client(SensorController ctrl, String host, int port){
+	Client(SensorController ctrl, String host, int port, int sensorID){
 		this.ctrl = ctrl;
 		this.brokerIP = host;
 		this.port = port;
+		this.sensorID = sensorID;
 		try {
 			this.sendSocket = new DatagramSocket();
 		} catch (SocketException e) {
@@ -59,7 +61,7 @@ class Client implements Runnable{
 
 	public void pushData(String hostname, int port, String data) throws ConnectException {
 		byte[] buffer = new byte[EventBroker.BUFFER_SIZE];
-		buffer = (TEMP + ";" + data + ";" + "1").getBytes();
+		buffer = (TEMP + ";" + data + ";" + sensorID).getBytes();
 		SocketAddress socketAddress = new InetSocketAddress(brokerIP, EventBroker.RECEIVE_PORT);
 		DatagramPacket packet = new DatagramPacket(buffer, buffer.length, socketAddress);
 		try {

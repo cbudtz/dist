@@ -12,9 +12,11 @@ public class SensorMain {
 	public static void main(String[] args) {
 		//Initializes 10 sensor instances
 		SensorController[] sensors = new SensorController[10];
+		int i = 0;
 		for (SensorController s : sensors){
-		s = new SensorController(server,port);
+		s = new SensorController(server,port, i);
 		new Thread(s).start();
+		i++;
 		}
 		
 

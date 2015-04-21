@@ -63,7 +63,7 @@ public class BrokerGUI {
 		scrollPane.setBounds(10, 44, 437, 349);
 		frmEventbroker.getContentPane().add(scrollPane);
 		//Jlist for subscriptions
-		JList subLog = new JList();
+		JList<Object> subLog = new JList<Object>();
 		this.subscriberLog = subLog;
 		scrollPane.setViewportView(subLog);
 		//ScrollPane for publications
