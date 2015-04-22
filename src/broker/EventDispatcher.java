@@ -33,6 +33,7 @@ public class EventDispatcher implements Runnable {
 	@Override
 	public void run() {
 		while (true){
+			//TODO Packet is unpacked and repacked - could just be forwarded
 			String [] message = receivePacket();//wait for new udp packet
 			String topic = message[0]; //extract data
 			String value = message[1];
