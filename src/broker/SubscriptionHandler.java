@@ -4,10 +4,12 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.LinkedList;
 
 public class SubscriptionHandler implements Runnable {
 	private ServerSocket subSocket;
 	private EventBroker broker;
+	private PingHandler pingHandler = new PingHandler(this);
 	final int DATALength = 100;
 
 	public SubscriptionHandler(int subPort, EventBroker broker) {
@@ -23,6 +25,8 @@ public class SubscriptionHandler implements Runnable {
 
 	@Override
 	public void run() {
+		//Start pingHandler - to keep a look out for dead subscribers...
+		new Thread(pingHandler).start();
 		while (true){
 			try {
 				//Waiting for connections
@@ -44,11 +48,31 @@ public class SubscriptionHandler implements Runnable {
 	}
 
 	private void parse(String data) {
+		//Message is parsed and data extracted - hopefully it conforms to specified format
 		String[] message = data.split(";");
-		if (message[0].contains("sub")){
-			broker.addSubscription(message[1], message[2]);
-		}
+		String messageType = message[0];
+		String ip = message[1];
+		String topic = message[2];
+		//Check message type
+		if (messageType.contains("sub")){
+			broker.addSubscription(ip, topic);
+			pingHandler.pingReceived(message[1]);
+		} else if (messageType.contains("unroll")){
+			broker.removeSubScription(ip, topic);
+		} else if (messageType.contains("renew")){
+			pingHandler.pingReceived(ip);
+			broker.getGui().addToSubLog("Subscriber renewed lease:" + ip);		}
 
+	}
+
+	public LinkedList<String> getSubscribers() {
+		return broker.getAllSubscribers();
+		
+	}
+
+	public void remove(String ip) {
+		broker.removeSubScriber(ip);
+		
 	}
 
 }

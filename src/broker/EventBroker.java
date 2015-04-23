@@ -2,7 +2,10 @@ package broker;
 
 import java.awt.EventQueue;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class EventBroker implements Runnable{
 	//Just some random ports
@@ -24,7 +27,7 @@ public class EventBroker implements Runnable{
 	//Gui to show what happens in broker (slight overkill)
 	private BrokerGUI gui;
 
-	
+
 	public EventBroker(int receivePort, int sendPort, int subscriptionPort, int subscriberPort) {
 		super();
 		this.subScribers = new HashMap<String,LinkedList<String>>();
@@ -95,7 +98,7 @@ public class EventBroker implements Runnable{
 	}
 	public LinkedList<String> getSubscribersFromTopic(String topic) {
 		return subScribers.get(topic);
-		
+
 	}
 	public BrokerGUI getGui() {
 		return gui;
@@ -103,6 +106,36 @@ public class EventBroker implements Runnable{
 	public void setGui(BrokerGUI gui) {
 		this.gui = gui;
 	}
+	public LinkedList<String> getAllSubscribers() {
+		//Create List of all subscriber ip's
+		LinkedList<String> subscriberList = new LinkedList<String>() ;
+		Iterator<Entry<String, LinkedList<String>>> it = subScribers.entrySet().iterator();
+		while (it.hasNext()){
+			Map.Entry<String, LinkedList<String>> topicEntry = it.next();
+			for (String s : topicEntry.getValue()) {
+				if (!subscriberList.contains(s)){
+					subscriberList.add(s);
+				}
+			}
 
+
+		}
+
+		return subscriberList;
+
+	}
+	public void removeSubScriber(String ip) {
+		//Subscriber is wiped from subscriptionlist - iterate over all topics...
+		Iterator<Entry<String, LinkedList<String>>> it = subScribers.entrySet().iterator();
+		while (it.hasNext()){
+			Map.Entry<String, LinkedList<String>> topicEntry = it.next();
+			topicEntry.getValue().remove(ip);
+		}
+
+
+	}
 
 }
+
+
+

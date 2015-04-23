@@ -9,7 +9,7 @@ public class BrokerMain {
 		final int SUBSCRIPTION_PORT = 7000; //Port for signing up for publishers
 		final int SUBSCRIBER_PORT = 8000; //subscribers incoming port
 		
-
+		//Make eventbroker run
 		EventBroker broker = new EventBroker(RECEIVE_PORT, SEND_PORT, SUBSCRIPTION_PORT, SUBSCRIBER_PORT);
 		broker.run();
 
