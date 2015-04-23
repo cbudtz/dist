@@ -1,3 +1,4 @@
+Kør BrokerMain for at starte EventBrokeren - brokerens vindue logger 
 Kør SensorMain for at starte 10 simulerede sensorer i hver sin tråd
 Kør ServerMain for at starte rmi/sensorserver op
 Kør ClientMain for at starte en client op, der forbinder til rmiserveren 
