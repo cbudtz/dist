@@ -10,3 +10,5 @@
 /common
 /rmiServer
 /testUDPsensor
+/tempServer
+/TempServerMain$TempServerController.class

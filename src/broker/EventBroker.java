@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class EventBroker implements Runnable{
-	//Just some random ports
+	//Just some random ports for connections
 	public static final int RECEIVE_PORT = 5000; //Ingoing Port for publishers
 	public static final int SEND_PORT = 6000; //Outgoing Port to subscribers
 	public static final int SUBSCRIPTION_PORT = 7000; //Port for signing up for publishers
@@ -67,6 +67,7 @@ public class EventBroker implements Runnable{
 
 	public void addSubscription(String ip, String topic){
 		LinkedList<String> topicSubs;
+		//Adds subscription to the subscriber hashmap
 		if (subScribers.containsKey(topic)) {
 			topicSubs = subScribers.get(topic);			
 		}else {
@@ -75,6 +76,7 @@ public class EventBroker implements Runnable{
 		if (!topicSubs.contains(ip)){
 			topicSubs.add(ip);
 			subScribers.put(topic, topicSubs);
+			//Log event to gui
 			gui.addToSubLog("new sub: "+  ip +" topic: " + topic);
 		} else {
 			gui.addToSubLog("Already subscribing:" +  ip +" topic: " + topic);

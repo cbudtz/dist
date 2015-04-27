@@ -41,6 +41,7 @@ public class EventDispatcher implements Runnable {
 			LinkedList<String> subscribers = broker.getSubscribersFromTopic(topic); //retrive subscriberList
 			broker.getGui().addToPubLog("publication received: " + topic +" value:"+ value + "sensorID:" + sensorID);
 			if (subscribers!=null){
+				//sending a new packet to all subscribers
 				for (String subscriber : subscribers) {
 					sendPacket(subscriber, topic, value, sensorID);
 					broker.getGui().addToPubLog("publication dispatched to: " + subscriber);
@@ -54,14 +55,15 @@ public class EventDispatcher implements Runnable {
 	}
 
 	private String[] receivePacket() {
+		//Setting up buffer for reception
 		byte[] buffer = new byte[EventBroker.BUFFER_SIZE];
 		DatagramPacket packet = new DatagramPacket(buffer , buffer.length);
 		try {
 			inSocket.receive(packet);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//fetching and decoding data.
 		String data = new String (packet.getData());
 		String[] message = data.trim().split(";");
 		return message;
@@ -69,6 +71,7 @@ public class EventDispatcher implements Runnable {
 
 	private void sendPacket(String subscriber, String topic, String value,
 			String sensorID) {
+		//Encoding new udp packet
 		byte[] buffer = new byte[EventBroker.BUFFER_SIZE];
 		buffer = (topic +";" + value + ";" + sensorID).getBytes();
 		SocketAddress socketAddress = new InetSocketAddress(subscriber, subscriberPort);

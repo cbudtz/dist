@@ -19,7 +19,7 @@ public class PingHandler implements Runnable {
 		for (String ip : pingList) {
 				subHandler.remove(ip);
 		}
-		//Getting subscriber list again
+		//Getting subscriber list again - marking them for clean up
 		pingList = subHandler.getSubscribers();
 
 		}
@@ -29,7 +29,6 @@ public class PingHandler implements Runnable {
 		try {
 			Thread.sleep(SUBLEASETIME*60*1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
